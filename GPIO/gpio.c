@@ -1,24 +1,26 @@
 #include "gpio_hal.h"
+#include "../SYSCTL/sysctl_hal.h"
 
-#define SYSCTL_RCGC2_R (*((volatile unsigned long *)0x400FE108))
-
-gpio_port_init(gpio_port_s* port_s)
+gpio_port_init(gpio_port_s* self, gpio_pin_config* cfg)
 {
-    gpio_port_t port_num = port_s->port_num;
-    uint8_t pins_mask = port_s->pins_used_mask;
+    gpio_port_s->pin_config = cfg;
     volatile unsigned long delay;
+    // activate clock for Port A
+    sysctl_enable_port_A_clock();
+    // allow time for clock to start
+    sysctl_wait_for_port_A_clock();
+    // no need to unlock GPIO Port A
+    // TODO: logic for different ports
+}
 
-    SYSCTL_RCGC2_R |= 0x00000001;     // 1) activate clock for Port A
-    delay = SYSCTL_RCGC2_R;           // allow time for clock to start
-    // 2) no need to unlock GPIO Port A
-    // 3) disable analog on PA5 - GPIO_PORTA_AMSEL_R &= ~0x20;
-    gpio_analog_mode_set(port_num, pins_mask, port_s->pins_analog_function);
-    // 4) PCTL GPIO on PA5 - GPIO_PORTA_PCTL_R &= ~0x00F00000;
-    gpio_port_control_set(port_num, port_control_mask, port_s->port_control);
-    // 5) direction PA5 input - GPIO_PORTA_DIR_R &= ~0x20;
-    gpio_direction_set(port_num, pins_mask, port_s->pins_direction);
-    // 6) PA5 regular port function - GPIO_PORTA_AFSEL_R &= ~0x20;
-    gpio_alternate_function_set(port_num, pins_mask, port_s->pins_alternate_control);
-    // 7) enable PA5 digital port - GPIO_PORTA_DEN_R |= 0x20;
-    gpio_digital_enable_set(port_num, pins_mask, port_s->pins_digital_enable);
+gpio_configure_pins(gpio_port_s* self)
+{
+    gpio_port_t port_num = self->port_num;
+    uint8_t pin_mask = self->pins_used_mask;
+
+    gpio_analog_mode_set(port_num, pins_mask, self->pin_config->analog_function);
+    gpio_port_control_set(port_num, port_control_mask, self->port_control);
+    gpio_direction_set(port_num, pins_mask, self->pin_config->direction);
+    gpio_alternate_function_set(port_num, pins_mask, self->pin_config->alternate_control);
+    gpio_digital_enable_set(port_num, pins_mask, self->pin_config->digital_enable);
 }

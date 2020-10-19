@@ -1,5 +1,4 @@
 #include "gpio_registers_map.h"
-#include "gpio_regsters_defs.h"
 #include "gpio.h"
 
 static inline void
@@ -7,7 +6,10 @@ gpio_data_write(gpio_port_t port, uint8_t mask, uint8_t data)
 {
     GPIODATA_REG_T* reg;
     reg = GPIODATA_REG(port);
-    reg->bits.data = data & mask;
+    if (data)
+        reg->bits.data |= mask;
+    else
+        reg->bits.data &= ~mask;
 }
 
 static inline uint8_t
@@ -23,7 +25,10 @@ gpio_direction_set(gpio_port_t port, uint8_t mask, gpio_direction_t dir)
 {
     GPIODIR_REG_T* reg;
     reg = GPIODIR_REG(port);
-    reg->bits.dir = dir & mask;
+    if (dir)
+        reg->bits.dir |= mask;
+    else
+        reg->bits.dir &= ~mask;
 }
 
 static inline uint8_t
@@ -39,7 +44,10 @@ gpio_int_sense_set(gpio_port_t port, uint8_t mask, gpio_int_sense_t is)
 {
     GPIOIS_REG_T* reg;
     reg = GPIOIS_REG(port);
-    reg->bits.is = is & mask;
+    if (is)
+        reg->bits.is |= mask;
+    else
+        reg->bits.is &= ~mask;
 }
 
 static inline uint8_t
@@ -55,7 +63,10 @@ gpio_int_both_edges_set(gpio_port_t port, uint8_t mask, gpio_int_both_edges_t ib
 {
     GPIOIBE_REG_T* reg;
     reg = GPIOIBE_REG(port);
-    reg.ibe = ibe & mask;
+    if (ibe)
+        reg->bits.ibe |= mask;
+    else
+        reg->bits.ibe &= ~mask;
 }
 
 static inline uint8_t
@@ -71,7 +82,10 @@ gpio_alternate_function_set(gpio_port_t port, uint8_t mask, gpio_afsel_t afsel)
 {
     GPIOAFSEL_REG_T* reg;
     reg = GPIOAFSEL_REG(port);
-    reg->bits.afsel = afsel & mask;
+    if (afsel)
+        reg->bits.afsel |= mask;
+    else
+        reg->bits.afsel &= ~mask;
 }
 
 static inline uint8_t
@@ -87,7 +101,10 @@ gpio_digital_enable_set(gpio_port_t port, uint8_t mask, gpio_den_t den)
 {
     GPIODEN_REG_T* reg;
     reg = GPIODEN_REG(port);
-    reg->bits.den = den & mask;
+    if (den)
+        reg->bits.den |= mask;
+    else
+        reg->bits.den &= ~mask;
 }
 
 static inline uint8_t
@@ -103,7 +120,10 @@ gpio_analog_mode_set(gpio_port_t port, uint8_t mask, gpio_amsel_t amsel)
 {
     GPIOAMSEL_REG_T* reg;
     reg = GPIOAMSEL_REG(port);
-    reg->bits.amsel = amsel & mask;
+    if (amsel)
+        reg->bits.amsel |= mask;
+    else
+        reg->bits.amsel &= ~mask;
 }
 
 static inline uint8_t

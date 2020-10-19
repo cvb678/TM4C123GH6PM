@@ -56,14 +56,20 @@ typedef enum gpio_port_control_t_
 typedef struct gpio_port_s_
 {
     gpio_port_t port_num;
+    gpio_pin_config* pin_config;
     uint8_t pins_used_mask;
     uint32_t port_control_mask;
     gpio_port_control_t port_control;
-    gpio_amsel_t pins_analog_function;
-    gpio_direction_t pins_direction;
-    gpio_afsel_t pins_alternate_control;
-    gpio_den_t pins_digital_enable;
 } gpio_port_s;
+
+typdef struct gpio_pin_config_
+{
+    gpio_amsel_t analog_function;
+    gpio_direction_t direction;
+    gpio_afsel_t alternate_control;
+    gpio_den_t digital_enable;
+} gpio_pin_config;
+
 
 gpio_port_init(gpio_port_s* port_s);
 #endif //"GPIO_H"
