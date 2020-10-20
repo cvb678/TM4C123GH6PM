@@ -7,21 +7,20 @@ int main (void)
     gpio_port_s portE;
     portE.port_num = GPIO_PORT_E;
     portE.port_control_mask = 0x00F00FFF;
-    portE.port_control = GPIO_PORT_CONTROL_SET;
 
     gpio_pin_config portE_arm_cfg;
-    portE_switch_cfg.pins = PIN2;
-    portE_switch_cfg.analog_function = GPIO_ANALOG_MODE_DISABLED;
-    portE_switch_cfg.direction = GPIO_DIR_INPUT;
-    portE_switch_cfg.alternate_control = GPIO_REGISTER_CTRL;
-    portE_switch_cfg.digital_enable = GPIO_DIGITAL_ENABLE;
+    portE_arm_cfg.pins = PIN2;
+    portE_arm_cfg.analog_function = GPIO_ANALOG_MODE_DISABLED;
+    portE_arm_cfg.direction = GPIO_DIR_INPUT;
+    portE_arm_cfg.alternate_control = GPIO_REGISTER_CTRL;
+    portE_arm_cfg.digital_enable = GPIO_DIGITAL_ENABLE;
 
     gpio_pin_config portE_sensor_cfg;
-    portE_switch_cfg.pins = PIN0 | PIN1;
-    portE_switch_cfg.analog_function = GPIO_ANALOG_MODE_DISABLED;
-    portE_switch_cfg.direction = GPIO_DIR_INPUT;
-    portE_switch_cfg.alternate_control = GPIO_REGISTER_CTRL;
-    portE_switch_cfg.digital_enable = GPIO_DIGITAL_ENABLE;
+    portE_sensor_cfg.pins = PIN0 | PIN1;
+    portE_sensor_cfg.analog_function = GPIO_ANALOG_MODE_DISABLED;
+    portE_sensor_cfg.direction = GPIO_DIR_INPUT;
+    portE_sensor_cfg.alternate_control = GPIO_REGISTER_CTRL;
+    portE_sensor_cfg.digital_enable = GPIO_DIGITAL_ENABLE;
 
     gpio_pin_config portE_LED_cfg;
     portE_LED_cfg.pins = PIN4;
@@ -49,12 +48,12 @@ int main (void)
         
         if(arm && sensor)
         {
-            gpio_data_write_pins(&portE, &portE_LED_CFG, alarm ^= alarm); // toggle output for alarm
+            gpio_data_write_pins(&portE, &portE_LED_cfg, alarm ^= alarm); // toggle output for alarm
             delayms(100);  // 100ms delay makes a 5Hz period
         }
         else
         {
-            gpio_data_write_pins(&portE, &portE_LED_CFG, 0); // toggle output for alarm;   // LED off if deactivated
+            gpio_data_write_pins(&portE, &portE_LED_cfg, 0); // toggle output for alarm;   // LED off if deactivated
         }
     }
 

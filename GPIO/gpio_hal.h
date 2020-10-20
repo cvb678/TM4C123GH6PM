@@ -135,11 +135,11 @@ gpio_analog_mode_get(gpio_port_t port)
 }
 
 static inline void
-gpio_port_control_set(gpio_port_t port, uint32_t mask, gpio_port_control_t pctl)
+gpio_port_control_set(gpio_port_t port, uint32_t mask)
 {
     GPIOPCTL_REG_T* reg;
     reg = GPIOPCTL_REG(port);
-    reg->bits.full = pctl & mask;
+    reg->full &= ~mask;
 }
 
 static inline uint32_t
@@ -147,5 +147,5 @@ gpio_port_control_get(gpio_port_t port)
 {
     GPIOPCTL_REG_T* reg;
     reg = GPIOPCTL_REG(port);
-    return reg->bits.full;
+    return reg->full;
 }

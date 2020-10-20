@@ -1,5 +1,4 @@
-#ifndef "GPIO_H"
-#define "GPIO_H"
+#include "../common/helpers.h"
 
 typedef enum gpio_port_t_
 {
@@ -47,20 +46,13 @@ typedef enum gpio_amsel_t_
     GPIO_ANALOG_MODE_ENABLED = 0xFF
 } gpio_amsel_t;
 
-typedef enum gpio_port_control_t_
-{
-    GPIO_PORT_CONTROL_DISABLE = 0,
-    GPIO_PORT_CONTROL_SET = 0xFFFFFFFF
-} gpio_port_control_t;
-
 typedef struct gpio_port_s_
 {
     gpio_port_t port_num;
     uint32_t port_control_mask;
-    gpio_port_control_t port_control;
 } gpio_port_s;
 
-typdef struct gpio_pin_config_
+typedef struct gpio_pin_config_
 {
     uint8_t pins;
     gpio_amsel_t analog_function;
@@ -71,6 +63,7 @@ typdef struct gpio_pin_config_
 } gpio_pin_config;
 
 
-gpio_port_init(gpio_port_s* self);
-gpio_configure_pins(gpio_port_s* self, gpio_pin_config* pin_config);
-#endif //"GPIO_H"
+void gpio_port_init(gpio_port_s* self);
+void gpio_configure_pins(gpio_port_s* self, gpio_pin_config* pin_config);
+uint8_t gpio_data_read_pins(gpio_port_s* self, gpio_pin_config* pin_config);
+void gpio_data_write_pins(gpio_port_s* self, gpio_pin_config* pin_config, uint8_t data);

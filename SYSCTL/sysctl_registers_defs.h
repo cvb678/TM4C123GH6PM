@@ -1,5 +1,4 @@
 #include "../common/helpers.h"
-#include "assert.h"
 
 typedef union SYSCTL_RCGCGPIO_T_
 {
@@ -15,4 +14,4 @@ typedef union SYSCTL_RCGCGPIO_T_
         uint32_t rsvd : 26;
     } bits;
 } SYSCTL_RCGCGPIO_T;
-assert(sizeof(SYSCTL_RCGCGPIO_T) != sizeof(uint32_t));
+//assert(sizeof(SYSCTL_RCGCGPIO_T) != sizeof(uint32_t));

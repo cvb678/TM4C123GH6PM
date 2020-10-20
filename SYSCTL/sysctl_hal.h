@@ -2,19 +2,19 @@
 #include "sysctl.h"
 
 static inline void
-sysctl_enable_port_a_clock()
+sysctl_enable_port_E_clock()
 {
     SYSCTL_RCGCGPIO_T* reg;
     reg = SYSCTL_RCGCGPIO_REG;
-    reg->bits.portA = CLOCK_ENABLED;
+    reg->bits.portE = CLOCK_ENABLED;
 }
 
 static inline void
-sysctl_wait_for_port_A_clock()
+sysctl_wait_for_port_E_clock()
 {
     SYSCTL_RCGCGPIO_T* reg;
     reg = SYSCTL_RCGCGPIO_REG;
-    while (CLOCK_ENABLED != reg->bits.portA)
+    while (CLOCK_ENABLED != reg->bits.portE)
     {
         
     }
